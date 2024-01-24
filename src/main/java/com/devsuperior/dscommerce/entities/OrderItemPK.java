@@ -1,11 +1,17 @@
 package com.devsuperior.dscommerce.entities;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
-public class OrderItemPK {
+public class OrderItemPK implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 5102272890872833510L;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -32,5 +38,18 @@ public class OrderItemPK {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderItemPK that = (OrderItemPK) o;
+        return order.equals(that.order) && product.equals(that.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(order, product);
     }
 }
